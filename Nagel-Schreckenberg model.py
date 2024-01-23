@@ -1,7 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[5]:
 
 
 import numpy as np
@@ -77,8 +73,6 @@ plt.ylabel('Position on Road')
 plt.title('Traffic Flow Simulation with Nagel-Schreckenberg Model')
 plt.show()
 
-
-# In[ ]:
 
 
 
