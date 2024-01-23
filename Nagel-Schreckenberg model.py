@@ -12,8 +12,7 @@ v = 1000  # length of the road
 T = 1000  # number of time steps
 prob_create_peak = 0.8  # probability of creating a new vehicle during peak hours
 prob_create_offpeak = 0.4  # probability of creating a new vehicle during off-peak hours
-prob_slowdown_normal = 0.2  # probability of a normal driver slowing down
-prob_slowdown_reckless = 0.1  # probability of a reckless driver slowing down
+prob_slowdown = 0.2  # probability of a driver slowing down
 maxspeed = 4  # maximum speed of a vehicle
 vehicles = [None for _ in range(v)]  # initialize the road with no vehicles
 
@@ -34,11 +33,13 @@ def update(vehicles):
     for i in range(v):
         if vehicles[i] is not None:
             p = random.random()
-            prob_slowdown = prob_slowdown_reckless if vehicles[i].behavior == 'reckless' else prob_slowdown_normal
             if p <= prob_slowdown and vehicles[i].speed > 0:
                 vehicles[i].speed -= 1
             elif vehicles[i].speed < maxspeed:
-                vehicles[i].speed += 1
+                if vehicles[i].behavior == 'reckless':
+                    vehicles[i].speed = min(vehicles[i].speed + 2, maxspeed)  # reckless drivers accelerate faster
+                else:
+                    vehicles[i].speed += 1
             if i + vehicles[i].speed < v and vehicles[i].speed > 0:
                 if vehicles[i + int(vehicles[i].speed)] is not None:  # If there is a vehicle in front
                     vehicles[i].speed = 0  # Stop the vehicle
